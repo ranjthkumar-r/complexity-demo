@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Complexity Explorer</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Complexity Explorer 🔍</h1>
+    <p>Interactive visualizations and explanations of time & space complexity</p>
+  </header>
+
+  <div class="container">
+    <aside class="sidebar">
+      <input id="search" placeholder="Search algorithms or complexities" />
+      <div id="alg-list" class="alg-list"></div>
+    </aside>
+
+    <main>
+      <section class="controls">
+        <label for="alg-select">Choose algorithm:</label>
+        <select id="alg-select"></select>
+        <button id="highlight-btn">Highlight Complexity</button>
+        <button id="toggle-curves" title="Click legend items to toggle individually">Toggle All Curves</button>
+        <button id="show-sort-vis" class="hidden">Open Sorting Visualizer</button>
+        <div class="help small-help">Tip: click a legend item to hide/show that curve. Hover the plot to see numeric values. Use sorting visualizer to see step-by-step operations.</div>
+        <div id="plot-tooltip" class="tooltip hidden" role="status" aria-live="polite"></div>
+      </section>
+
+      <section class="visual">
+        <canvas id="complexity-canvas" width="800" height="320"></canvas>
+        <div id="legend" class="legend"></div>
+      </section>
+
+      <section class="details">
+        <h2 id="alg-name">Select an algorithm</h2>
+        <div class="meta">
+          <div><strong>Category:</strong> <span id="alg-category"></span></div>
+          <div><strong>Time (Best / Avg / Worst):</strong> <span id="alg-time"></span></div>
+          <div><strong>Space:</strong> <span id="alg-space"></span></div>
+        </div>
+        <p id="alg-desc"></p>
+        <pre id="alg-code"><code></code></pre>
+      </section>
+
+      <section id="sort-visualizer" class="modal hidden">
+        <div class="inner">
+          <div class="viz-controls">
+            <label>Algorithm: <select id="sort-alg"></select></label>
+            <button id="shuffle">Shuffle</button>
+            <button id="start-sort">Start</button>
+            <button id="close-viz">Close</button>
+          </div>
+          <div id="sort-canvas-wrap"><canvas id="sort-canvas" width="800" height="200"></canvas></div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer>
+    <small>Built with ❤️ — Explore complexity classes & algorithm examples</small>
+  </footer>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
