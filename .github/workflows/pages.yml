@@ -1,36 +1,14 @@
-name: Deploy to GitHub Pages
+# NOTE: Replaced by a gh-pages deployment workflow that avoids usage of deprecated
+# actions/upload-artifact v3 internals. See `deploy-gh-pages.yml` for the new flow.
+# The original pages workflow is intentionally left as a placeholder to document
+# the change.
 
-on:
-  push:
-    branches:
-      - main
+name: Old Pages Workflow (disabled)
 
-permissions:
-  pages: write
-  id-token: write
-  contents: read
+on: []
 
 jobs:
-  deploy:
+  noop:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy-pages.outputs.page_url }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Prepare (no build step)
-        run: echo "Deploying static site from repository root"
-
-      - name: Setup GitHub Pages
-        uses: actions/configure-pages@v3
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: .
-
-      - name: Deploy to GitHub Pages
-        id: deploy-pages
-        uses: actions/deploy-pages@v1
+      - run: echo "This workflow is disabled. Use deploy-gh-pages.yml instead."

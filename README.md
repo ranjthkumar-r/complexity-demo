@@ -24,9 +24,11 @@ Steps to publish:
    - git branch -M main
    - git remote add origin https://github.com/<your-username>/<repo>.git
    - git push -u origin main
-3. The workflow (`.github/workflows/pages.yml`) will run and deploy the repository root as a Pages site. After the run completes, your site will be available at `https://<your-username>.github.io/<repo>/`.
+3. The workflow (`.github/workflows/deploy-gh-pages.yml`) will run and publish the repository root to a `gh-pages` branch. After it completes, your site will be available at `https://<your-username>.github.io/<repo>/` (may take a few minutes).
 
 Notes & tips
+- The original Pages workflow may fail if it depends on deprecated actions that reference `actions/upload-artifact@v3`. This repository now uses a `gh-pages` branch deploy workflow which avoids that issue.
+- If you prefer GitHub Pages 'Pages' publisher (server-side), you can re-enable the Pages workflow once GitHub fixes the deprecated-action issue, or use `actions/deploy-pages@v1` when updated.
 - If you want a custom domain, add `CNAME` in the repository root and configure DNS.
 - If you'd rather serve from `docs/` on `main`, move site files into `docs/` and update the workflow accordingly.
 - To run the basic JSON tests locally: `npm test` (Node.js required).
