@@ -1,8 +1,11 @@
 {
   "name": "complexity-explorer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
-    "test": "node tests/test_algorithms.js"
+    "test": "node tests/test_algorithms.js && node tests/test_analyzer.js"
+  },
+  "devDependencies": {
+    "esprima": "^4.0.1"
   }
 }

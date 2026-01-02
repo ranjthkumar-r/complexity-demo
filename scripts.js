@@ -211,5 +211,121 @@ function resizeCanvases(){
   drawBasePlot(); if(arr.length) drawArray();
 }
 window.addEventListener('resize', ()=>{ resizeCanvases(); });
+// wire up analyzer UI (uses analyzer/analyzer.js and esprima loaded via CDN)
+function setupAnalyzer(){
+  // initialize CodeMirror editor
+  const sample = document.getElementById('sample-code');
+  const editorEl = document.getElementById('code-editor');
+  const editor = CodeMirror(editorEl, {mode:'javascript', value:'// Example: function sum(arr){ let s=0; for(let i=0;i<arr.length;i++) s+=arr[i]; return s; }', lineNumbers:true, theme:'default'});
+  const analyzeBtn = document.getElementById('analyze-btn');
+  const result = document.getElementById('analyze-result');
+  const formatBtn = document.getElementById('format-btn');
+  const profileBtn = document.getElementById('profile-btn');
+  const fnNameInput = document.getElementById('fn-name');
+  const downloadBtn = document.getElementById('download-report');
+
+  const samples = {
+    binarySearch: `function binarySearch(arr, target){\n  let lo=0, hi=arr.length-1;\n  while(lo<=hi){ const mid=Math.floor((lo+hi)/2); if(arr[mid]===target) return mid; if(arr[mid]<target) lo = mid+1; else hi = mid-1; } return -1; }`,
+    bubble: `function bubbleSort(a){ for(let i=0;i<a.length;i++) for(let j=0;j<a.length-1-i;j++) if(a[j]>a[j+1]) [a[j],a[j+1]]=[a[j+1],a[j]]; return a; }`,
+    fib: `function fib(n){ if(n<2) return n; return fib(n-1)+fib(n-2); }`,
+    mergeSort: `function mergeSort(a){ if(a.length<=1) return a; const m=Math.floor(a.length/2); const left=mergeSort(a.slice(0,m)); const right=mergeSort(a.slice(m)); return left.concat(right); }`,
+    quickSort: `function quickSort(a){ if(a.length<=1)return a; const p=a[Math.floor(a.length/2)]; const left=a.filter(x=>x<p), right=a.filter(x=>x>p); return quickSort(left).concat([p]).concat(quickSort(right)); }`,
+    countingSort: `function countingSort(a, k){ const count = new Array(k).fill(0); for(let x of a) count[x]++; let res=[]; for(let i=0;i<count.length;i++){ while(count[i]--) res.push(i);} return res; }`
+  };
+  sample.onchange = ()=>{ if(samples[sample.value]) editor.setValue(samples[sample.value]); };
+  
+  // real-time analyze on change (debounced)
+  let changeTimer = null; editor.on('change', ()=>{ clearTimeout(changeTimer); changeTimer = setTimeout(()=>{ try{ const res = window.Analyzer.analyzeCode(editor.getValue()); document.getElementById('annotated-code').innerHTML = buildAnnotatedHTML(editor.getValue(), res.nodes||[]); drawMiniPlot('mini-plot', res.timeEstimate); }catch(e){} }, 450); });
+
+  analyzeBtn.onclick = ()=>{
+    const code = editor.getValue();
+    let res;
+    try{ res = window.Analyzer.analyzeCode(code); }
+    catch(e){ res = { error: e.message }; }
+    if(res.error){ result.innerHTML = `<strong>Error:</strong> ${res.error}`; return; }
+
+    // show summary
+    result.innerHTML = `<div><strong>Time:</strong> ${res.timeEstimate} <em>(${res.timeConfidence})</em></div>
+      <div><strong>Space:</strong> ${res.spaceEstimate}</div>
+      <div style="margin-top:8px">${res.message}${res.detectedPattern? '<br/><strong>Detected pattern:</strong> '+res.detectedPattern : ''}</div>
+      <pre style="margin-top:8px;background:rgba(255,255,255,0.03);padding:8px;border-radius:6px;color:#fff">${JSON.stringify(res.stats,null,2)}</pre>`;
+
+    // annotated code
+    const annotated = document.getElementById('annotated-code');
+    annotated.innerHTML = buildAnnotatedHTML(code, res.nodes || []);
+
+    // mini-plot
+    drawMiniPlot('mini-plot', res.timeEstimate);
+  };
+
+  formatBtn.onclick = ()=>{
+    try{ const ast = esprima.parseScript(editor.getValue()); const formatted = escodegen.generate(ast); editor.setValue(formatted); }catch(e){ alert('Format error: '+e.message); }
+  };
+
+  // profiling via Web Worker
+  let profilerWorker = null;
+  profileBtn.onclick = ()=>{
+    const code = editor.getValue(); const fnName = fnNameInput.value.trim();
+    if(profilerWorker) profilerWorker.terminate();
+    profilerWorker = new Worker('analyzer/worker.js');
+    document.getElementById('profile-legend').textContent = 'Running empirical profile...';
+    profilerWorker.onmessage = (ev)=>{
+      const r = ev.data; if(r.error){ document.getElementById('profile-legend').textContent = 'Error: '+r.error; return; }
+      document.getElementById('profile-legend').textContent = `Function: ${r.fnName}`;
+      drawProfile('profile-plot', r.timings);
+      profilerWorker.terminate(); profilerWorker=null;
+    };
+    profilerWorker.postMessage({code, fnName, sizes:[100,200,400,800,1600], runsPerSize:3});
+  };
+
+  downloadBtn.onclick = ()=>{
+    const code = editor.getValue(); const res = window.Analyzer.analyzeCode(code);
+    const data = {code, analysis: res, date: new Date().toISOString()};
+    const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+    const url = URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='analysis.json'; a.click(); URL.revokeObjectURL(url);
+  };
+
+  function buildAnnotatedHTML(code, nodes){
+    if(!nodes || !nodes.length) return escapeHtml(code);
+    // sort nodes by start index
+    const parts = [];
+    nodes.sort((a,b)=>a.range[0]-b.range[0]);
+    let last = 0;
+    for(const n of nodes){ const [s,e] = n.range; if(s>last) parts.push(escapeHtml(code.slice(last,s))); const inner = escapeHtml(code.slice(s,e)); let cls=''; if(n.type==='loop') cls='annot-node-loop'; else if(n.type==='call' && n.name && n.name.match(/^[a-zA-Z_]/)) cls='annot-node-recursion'; else if(n.type==='slice') cls='annot-node-slice'; else if(n.type==='divide-by-2') cls='annot-node-divide'; parts.push(`<span class="${cls}" title="${n.type}${n.name? ': '+n.name: ''}">${inner}</span>`); last=e; }
+    if(last < code.length) parts.push(escapeHtml(code.slice(last)));
+    return parts.join('');
+  }
+  function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  function drawMiniPlot(canvasId, timeStr){
+    const m = document.getElementById(canvasId); const ctxM = m.getContext('2d'); ctxM.clearRect(0,0,m.width,m.height);
+    const keyMap = {'O(1)':'1','O(log n)':'logn','O(n)':'n','O(n log n)':'nlogn','O(n^2)':'n2','O(2^n)':'2powern'};
+    const key = keyMap[timeStr] || 'n';
+    const N=20; const xs = Array.from({length:N}, (_,i)=>i+1);
+    const vals = xs.map(x=> (functions[key]||functions['n'])(x) );
+    const max = Math.max(...vals);
+    // draw bg
+    ctxM.fillStyle='#fff'; ctxM.fillRect(0,0,m.width,m.height);
+    // draw axes
+    ctxM.strokeStyle='#e6e9ef'; ctxM.beginPath(); ctxM.moveTo(30,10); ctxM.lineTo(30,m.height-20); ctxM.lineTo(m.width-10,m.height-20); ctxM.stroke();
+    // draw curve
+    ctxM.strokeStyle = colorMap[key] || '#0B5FFF'; ctxM.lineWidth=2; ctxM.beginPath(); vals.forEach((v,i)=>{ const x = 30 + (i/(N-1))*(m.width-50); const y = (m.height-20) - (v/max)*(m.height-40); if(i===0) ctxM.moveTo(x,y); else ctxM.lineTo(x,y); }); ctxM.stroke();
+    // label
+    ctxM.fillStyle='#111'; ctxM.font='12px sans-serif'; ctxM.fillText(timeStr, m.width-100, 18);
+  }
+
+  function drawProfile(canvasId, timings){
+    const c = document.getElementById(canvasId); const ctx = c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height);
+    if(!timings || !timings.length) return; const xs = timings.map(t=>t.n); const ys = timings.map(t=>t.avg);
+    const maxY = Math.max(...ys); const minY = Math.min(...ys);
+    // axes
+    ctx.strokeStyle='#e6e9ef'; ctx.beginPath(); ctx.moveTo(40,10); ctx.lineTo(40,c.height-30); ctx.lineTo(c.width-10,c.height-30); ctx.stroke();
+    // plot
+    ctx.strokeStyle='#0B5FFF'; ctx.lineWidth=2; ctx.beginPath(); for(let i=0;i<xs.length;i++){ const x = 40 + (i/(xs.length-1))*(c.width-60); const y = (c.height-30) - ((ys[i]-minY)/(maxY-minY||1))*(c.height-50); if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); ctx.fillStyle='#0B5FFF'; ctx.beginPath(); ctx.arc(x,y,3,0,2*Math.PI); ctx.fill(); } ctx.stroke();
+    // legend
+    document.getElementById('profile-legend').innerHTML = 'n: ['+xs.join(',')+'] — times(ms): ['+ys.map(v=>v.toFixed(2)).join(', ')+']';
+  }
+}
+
 // initial
-fetchData(); resizeCanvases(); drawBasePlot();
+fetchData(); resizeCanvases(); drawBasePlot(); setupAnalyzer();

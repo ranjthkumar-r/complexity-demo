@@ -33,6 +33,14 @@ Notes & tips
 - If you'd rather serve from `docs/` on `main`, move site files into `docs/` and update the workflow accordingly.
 - To run the basic JSON tests locally: `npm test` (Node.js required).
 
+Analyzer & new features
+- Live edit JavaScript with CodeMirror (in-browser editor). The analyzer runs on changes and displays annotated nodes (loops, recursion, divide-by-2, slice, etc.).
+- Pattern detectors: merge/quick (divide-and-conquer), binary search, counting sort, heap-sort heuristics.
+- Empirical profiler: click "Run Empirical Profile" to run the function in a sandboxed Web Worker across multiple input sizes and see measured timings in a chart.
+- Download an analysis report via "Download Report" which saves the code + analysis JSON.
+
+Security note: the empirical profiler executes user code in a Web Worker (isolated from the page's DOM) and applies a timeout; still, avoid running untrusted code with sensitive side effects.
+
 Features
 - Plot comparisons of complexity classes (O(1), O(log n), O(n), O(n log n), O(n^2), O(2^n)) with toggleable legend items
 - Browse common algorithms and see their time/space complexities and short code snippets

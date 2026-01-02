@@ -17,12 +17,25 @@ header h1{margin:0;font-size:20px}
 main{flex:1}
 .controls{display:flex;gap:8px;align-items:center;margin-bottom:10px}
 .controls select, .controls button{padding:8px;border-radius:6px;border:1px solid #ddd}
-.visual{background:white;padding:12px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.04);margin-bottom:12px}
+.visual{background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(250,250,255,0.95));padding:18px;border-radius:12px;box-shadow:0 6px 22px rgba(13,38,77,0.08);margin-bottom:12px}
 .legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
-.legend .item{display:flex;gap:6px;align-items:center;cursor:pointer;padding:4px;border-radius:6px}
+.legend .item{display:flex;gap:6px;align-items:center;cursor:pointer;padding:6px 8px;border-radius:8px;transition:transform .12s,opacity .12s}
 .legend .item.hidden{opacity:0.35}
+.legend .item:hover{transform:translateY(-3px)}
 .legend .dot{width:12px;height:12px;border-radius:50%}
-.details{background:white;padding:12px;border-radius:8px;box-shadow:0 2px 6px rgba(0,0,0,0.04)}
+.details{background:linear-gradient(180deg,#fff,#fbfbff);padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(13,38,77,0.04)}
+.analyzer{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+#code-input{width:100%;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace;border:1px solid #e6e9ef;padding:10px;border-radius:8px;background:linear-gradient(180deg,#fbfbff,#fff);box-shadow:inset 0 1px 0 rgba(0,0,0,0.02)}
+#code-editor .CodeMirror{height:100%;}
+.analyzer-controls{display:flex;gap:8px;flex-wrap:wrap}
+.analyzer-controls button{padding:8px 10px;border-radius:8px;border:1px solid rgba(11,95,255,0.08);background:linear-gradient(90deg,var(--accent),#4c7cf2);color:white;cursor:pointer}
+.analyze-result{background:#0f1724;color:#e6f0ff;padding:10px;border-radius:8px;margin-top:8px}
+.annotated{background:linear-gradient(180deg,#0b1220,#071026);color:#e6f0ff;padding:12px;border-radius:8px;overflow:auto;white-space:pre-wrap;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono', monospace}
+.annot-node-loop{background:rgba(244,67,54,0.12);border-left:3px solid rgba(244,67,54,0.8);padding-left:6px}
+.annot-node-recursion{background:rgba(99,102,241,0.08);border-left:3px solid rgba(99,102,241,0.9);padding-left:6px}
+.annot-node-slice{background:rgba(16,185,129,0.06);border-left:3px solid rgba(16,185,129,0.85);padding-left:6px}
+.annot-node-divide{background:rgba(251,146,60,0.06);border-left:3px solid rgba(251,146,60,0.9);padding-left:6px}
+
 .meta{display:flex;gap:16px;margin-bottom:8px;flex-wrap:wrap}
 pre{background:#0f1724;color:#dbeafe;padding:12px;border-radius:6px;overflow:auto}
 .hidden{display:none}

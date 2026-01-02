@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Complexity Explorer</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
 </head>
 <body>
   <header>
@@ -43,6 +44,32 @@
         </div>
         <p id="alg-desc"></p>
         <pre id="alg-code"><code></code></pre>
+
+        <hr />
+        <h3>Analyze JavaScript Code</h3>
+        <div class="analyzer">
+          <label>Sample: <select id="sample-code"><option value="">-- choose sample --</option><option value="binarySearch">Binary Search</option><option value="bubble">Bubble Sort</option><option value="fib">Naive Fibonacci</option><option value="mergeSort">Merge Sort</option><option value="quickSort">Quick Sort</option><option value="countingSort">Counting Sort</option></select></label>
+
+          <div id="code-editor" style="height:220px;border-radius:8px;border:1px solid #e6e9ef;margin-top:8px"></div>
+          <div class="analyzer-controls">
+            <button id="analyze-btn">Analyze</button>
+            <button id="format-btn">Format</button>
+            <input id="fn-name" placeholder="Function name (for profiling)" style="padding:6px;border-radius:6px;border:1px solid #ddd;margin-left:8px" />
+            <button id="profile-btn">Run Empirical Profile</button>
+            <button id="download-report">Download Report</button>
+          </div>
+          <div id="analyze-result" class="analyze-result"></div>
+
+          <div class="analysis-visuals">
+            <canvas id="mini-plot" width="320" height="120" style="border-radius:8px;margin-top:8px;display:block;background:linear-gradient(180deg,#fff,#fbfbff);"></canvas>
+            <h4 style="margin-top:8px">Annotated code</h4>
+            <pre id="annotated-code" class="annotated"></pre>
+
+            <h4 style="margin-top:8px">Empirical Profile</h4>
+            <canvas id="profile-plot" width="320" height="160" style="border-radius:8px;background:#fff"></canvas>
+            <div id="profile-legend" class="small-help"></div>
+          </div>
+        </div>
       </section>
 
       <section id="sort-visualizer" class="modal hidden">
@@ -64,6 +91,13 @@
     <small>Built with ❤️ — Explore complexity classes & algorithm examples</small>
   </footer>
 
+  <!-- CodeMirror & escodegen -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/escodegen@2.0.0/escodegen.browser.js"></script>
+  <!-- Esprima for AST parsing (used by analyzer) -->
+  <script src="https://cdn.jsdelivr.net/npm/esprima@4.0.1/dist/esprima.min.js"></script>
+  <script src="analyzer/analyzer.js"></script>
   <script src="scripts.js"></script>
 </body>
 </html>
