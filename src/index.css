@@ -1,0 +1,168 @@
+/* Copy of glassmorphism styles adapted for React */
+:root {
+  --bg-app: #000000;
+  --bg-panel: rgba(255, 255, 255, 0.05);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.15);
+  --primary: #808080;
+  /* Gray */
+  --text-main: #ffffff;
+  --text-muted: #a0a0a0;
+  --font-main: 'Fira Code', monospace;
+}
+
+body {
+  margin: 0;
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  font-family: var(--font-main);
+  font-weight: 500;
+  /* Medium Weight */
+  /* Black & Gray Gradient */
+  background: linear-gradient(180deg, #1a1a1a 0%, #000000 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Global Layout Elements */
+.global-header {
+  height: 60px;
+  border-bottom: var(--glass-border);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  background: rgba(20, 20, 20, 0.8);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.global-footer {
+  height: 50px;
+  border-top: var(--glass-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  background: rgba(20, 20, 20, 0.8);
+}
+
+.layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-container {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 24px;
+  padding: 24px;
+}
+
+.glass-panel {
+  background: var(--bg-panel);
+  backdrop-filter: blur(12px);
+  border: var(--glass-border);
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.sidebar {
+  /* Adjust height for Header (60px) + Footer (50px) awareness if needed, 
+      but standard sticking usually works fine. */
+  height: calc(100vh - 100px);
+  position: sticky;
+  top: 84px;
+  /* Header height + gap */
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary), #22d3ee);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.search-bar {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 12px;
+  border-radius: 8px;
+  color: white;
+  margin-bottom: 12px;
+}
+
+.alg-list {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.alg-item {
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.alg-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.alg-item.active {
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.grid-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.stats-grid {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 12px;
+  border-radius: 8px;
+  flex: 1;
+}
+
+.code-input {
+  width: 100%;
+  height: 150px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  font-family: monospace;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.btn-primary {
+  background: var(--primary);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+
+pre {
+  background: black;
+  padding: 16px;
+  border-radius: 8px;
+  overflow-x: auto;
+}

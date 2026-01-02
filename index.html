@@ -1,121 +1,20 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complexity Explorer</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/esprima@4.0.1/dist/esprima.min.js"></script>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Complexity Explorer (React)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
-    <div class="app-container">
-        <!-- Sidebar -->
-        <aside class="glass-panel">
-            <div class="logo">Complexity ⚡</div>
-            <input type="text" id="search" class="search-bar" placeholder="Search algorithms...">
-            <div id="alg-list" class="alg-list">
-                <!-- Items injected by JS -->
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main>
-            <!-- Header -->
-            <header class="glass-panel" style="flex-direction: column; align-items: flex-start; gap: 16px;">
-                <div class="title-section">
-                    <h1 id="alg-title">Select an Algorithm</h1>
-                    <p id="alg-desc">Select an algorithm from the sidebar to visualize its complexity and see
-                        implementation details.</p>
-                </div>
-                <div class="actions">
-                    <button id="highlight-btn" class="btn btn-primary">
-                        Highlight Curve
-                    </button>
-                    <button id="show-sort-btn" class="btn" style="display:none">
-                        Open Visualizer
-                    </button>
-                </div>
-            </header>
-
-            <!-- Stats & Code -->
-            <section class="glass-panel"
-                style="padding: 0; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; gap:0;">
-                <div style="padding: 24px; border-right: var(--glass-border);">
-                    <h3 style="margin-bottom: 16px; font-weight: 500;">Analysis</h3>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <label>Time Complexity (Avg)</label>
-                            <div id="val-time" class="value">-</div>
-                        </div>
-                        <div class="stat-card">
-                            <label>Space Complexity</label>
-                            <div id="val-space" class="value">-</div>
-                        </div>
-                    </div>
-                </div>
-                <div style="padding: 24px; background: rgba(0,0,0,0.2);">
-                    <h3 style="margin-bottom: 16px; font-weight: 500;">Implementation</h3>
-                    <pre><code id="code-block">// Code will appear here</code></pre>
-                </div>
-            </section>
-
-            <!-- Chart -->
-            <section class="glass-panel">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <h3>Complexity Growth</h3>
-                    <div id="legend" class="legend"></div>
-                </div>
-                <div class="chart-wrapper">
-                    <canvas id="complexity-canvas" width="800" height="400"></canvas>
-                </div>
-            </section>
-
-            <!-- Code Analyzer -->
-            <section class="glass-panel">
-                <h3>Complex-o-Meter 🔍</h3>
-                <p style="color:var(--text-muted); font-size:14px; margin-bottom:12px;">Paste your JavaScript code below
-                    to detect Time & Space complexity.</p>
-                <div style="display:grid; grid-template-columns: 1fr 240px; gap:24px;">
-                    <div style="display:flex; flex-direction:column; gap:12px;">
-                        <textarea id="custom-code"
-                            style="width:100%; height:200px; background:rgba(0,0,0,0.3); border:1px solid var(--border-panel); color:#fff; padding:12px; border-radius:8px; font-family:var(--font-mono);"
-                            placeholder="function test(n) { ... }"></textarea>
-                        <button id="analyze-btn" class="btn btn-primary" style="align-self:flex-start;">Analyze
-                            Code</button>
-                    </div>
-                    <div id="analysis-result"
-                        style="background:rgba(255,255,255,0.05); padding:16px; border-radius:12px; display:none;">
-                        <h4 style="margin-bottom:12px; color:var(--accent);">Analysis Result</h4>
-                        <div style="margin-bottom:8px;"><strong>Time:</strong> <span id="r-time" class="value"
-                                style="font-size:16px;">-</span></div>
-                        <div style="margin-bottom:8px;"><strong>Space:</strong> <span id="r-space" class="value"
-                                style="font-size:16px;">-</span></div>
-                        <div style="font-size:12px; color:var(--text-muted); margin-top:12px;" id="r-details"></div>
-                    </div>
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <!-- Sorting Modal -->
-    <div id="sort-modal" class="modal-overlay">
-        <div class="modal-content glass-panel">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h2>Sorting Visualizer</h2>
-                <button id="close-modal" class="btn">Close</button>
-            </div>
-            <div style="margin-top: 20px; display: flex; gap: 10px;">
-                <button id="start-sort" class="btn btn-primary">Start Sorting</button>
-                <button id="shuffle-btn" class="btn">Shuffle</button>
-            </div>
-            <canvas id="sort-canvas" width="800" height="300"></canvas>
-        </div>
-    </div>
-
-    <!-- Modules -->
-    <script type="module" src="js/main.js"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
 </body>
 
 </html>

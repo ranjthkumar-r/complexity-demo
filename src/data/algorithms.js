@@ -1,10 +1,10 @@
 export const algorithms = [
-  {
-    id: "binary-search",
-    name: "Binary Search",
-    category: "Searching",
-    desc: "Efficiently finds an item in a sorted list by repeatedly dividing the search interval in half.",
-    details: `
+    {
+        id: "binary-search",
+        name: "Binary Search",
+        category: "Searching",
+        desc: "Efficiently finds an item in a sorted list by repeatedly dividing the search interval in half.",
+        details: `
       <p>Binary Search is one of the most fundamental and efficient algorithms in computer science. It works on the principle of <strong>Divide and Conquer</strong>.</p>
       
       <h4>How it Works</h4>
@@ -25,10 +25,10 @@ export const algorithms = [
         <li><strong>Space: O(1)</strong> - It only requires a few variables (pointers) to keep track of the range, so it uses constant extra space.</li>
       </ul>
     `,
-    time: { best: "O(1)", avg: "O(log n)", worst: "O(log n)" },
-    space: "O(1)",
-    complexityFunction: "logn",
-    code: `/**
+        time: { best: "O(1)", avg: "O(log n)", worst: "O(log n)" },
+        space: "O(1)",
+        complexityFunction: "logn",
+        code: `/**
  * Binary Search
  * @param {number[]} arr - A sorted array of numbers
  * @param {number} target - The number to search for
@@ -57,13 +57,13 @@ function binarySearch(arr, target) {
 
   return -1; // Not found
 }`
-  },
-  {
-    id: "linear-search",
-    name: "Linear Search",
-    category: "Searching",
-    desc: "The simplest search algorithm: checks every element until the target is found.",
-    details: `
+    },
+    {
+        id: "linear-search",
+        name: "Linear Search",
+        category: "Searching",
+        desc: "The simplest search algorithm: checks every element until the target is found.",
+        details: `
       <p>Linear Search is the most basic searching algorithm. It sequentially checks each element of the list until a match is found or the whole list has been searched.</p>
       
       <h4>When to Use</h4>
@@ -78,10 +78,10 @@ function binarySearch(arr, target) {
         <li><strong>Space: O(1)</strong> - No extra memory is needed.</li>
       </ul>
     `,
-    time: { best: "O(1)", avg: "O(n)", worst: "O(n)" },
-    space: "O(1)",
-    complexityFunction: "n",
-    code: `/**
+        time: { best: "O(1)", avg: "O(n)", worst: "O(n)" },
+        space: "O(1)",
+        complexityFunction: "n",
+        code: `/**
  * Linear Search
  * @param {number[]} arr - An array of numbers
  * @param {number} target - The number to search for
@@ -95,13 +95,13 @@ function linearSearch(arr, target) {
   }
   return -1;
 }`
-  },
-  {
-    id: "bubble-sort",
-    name: "Bubble Sort",
-    category: "Sorting",
-    desc: "A simple sorting algorithm that repeatedly steps through the list, comparing adjacent elements and swapping them.",
-    details: `
+    },
+    {
+        id: "bubble-sort",
+        name: "Bubble Sort",
+        category: "Sorting",
+        desc: "A simple sorting algorithm that repeatedly steps through the list, comparing adjacent elements and swapping them.",
+        details: `
       <p>Bubble Sort is often the first sorting algorithm taught because of its conceptual simplicity. It behaves like bubbles rising to the surface: larger elements 'bubble up' to the end of the list with each pass.</p>
       
       <h4>Mechanism</h4>
@@ -116,10 +116,10 @@ function linearSearch(arr, target) {
         <li><strong>Space: O(1)</strong> - Swapping is done in-place.</li>
       </ul>
     `,
-    time: { best: "O(n)", avg: "O(n^2)", worst: "O(n^2)" },
-    space: "O(1)",
-    complexityFunction: "n2",
-    code: `/**
+        time: { best: "O(n)", avg: "O(n^2)", worst: "O(n^2)" },
+        space: "O(1)",
+        complexityFunction: "n2",
+        code: `/**
  * Bubble Sort
  * @param {number[]} arr - Array to sort
  * @returns {number[]} - The sorted array
@@ -141,13 +141,13 @@ function bubbleSort(arr) {
   
   return arr;
 }`
-  },
-  {
-    id: "insertion-sort",
-    name: "Insertion Sort",
-    category: "Sorting",
-    desc: "Builds a sorted array one item at a time, similar to sorting playing cards in your hand.",
-    details: `
+    },
+    {
+        id: "insertion-sort",
+        name: "Insertion Sort",
+        category: "Sorting",
+        desc: "Builds a sorted array one item at a time, similar to sorting playing cards in your hand.",
+        details: `
       <p>Insertion Sort is efficient for small data sets or data sets that are already substantially sorted. It works by taking an element from the unsorted portion and inserting it into the correct position in the sorted portion.</p>
       
       <h4>Real-World Analogy</h4>
@@ -159,10 +159,10 @@ function bubbleSort(arr) {
         <li><strong>Space: O(1)</strong> - Sorts in-place.</li>
       </ul>
     `,
-    time: { best: "O(n)", avg: "O(n^2)", worst: "O(n^2)" },
-    space: "O(1)",
-    complexityFunction: "n2",
-    code: `/**
+        time: { best: "O(n)", avg: "O(n^2)", worst: "O(n^2)" },
+        space: "O(1)",
+        complexityFunction: "n2",
+        code: `/**
  * Insertion Sort
  * @param {number[]} arr - Array to sort
  * @returns {number[]} - The sorted array
@@ -184,13 +184,13 @@ function insertionSort(arr) {
   }
   return arr;
 }`
-  },
-  {
-    id: "merge-sort",
-    name: "Merge Sort",
-    category: "Sorting",
-    desc: "A stable, efficient, divide-and-conquer sorting algorithm.",
-    details: `
+    },
+    {
+        id: "merge-sort",
+        name: "Merge Sort",
+        category: "Sorting",
+        desc: "A stable, efficient, divide-and-conquer sorting algorithm.",
+        details: `
       <p>Merge Sort represents a significant step up in efficiency. It recursively splits the array into halves until it has n arrays of 1 element, then it systematically <strong>merges</strong> these sub-arrays back together in sorted order.</p>
 
       <h4>Key Feature: Stability</h4>
@@ -202,10 +202,10 @@ function insertionSort(arr) {
         <li><strong>Space: O(n)</strong> - Unlike Bubble or Insertion sort, Merge Sort typically requires auxiliary space to hold the sub-arrays during merging.</li>
       </ul>
     `,
-    time: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)" },
-    space: "O(n)",
-    complexityFunction: "nlogn",
-    code: `/**
+        time: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n log n)" },
+        space: "O(n)",
+        complexityFunction: "nlogn",
+        code: `/**
  * Merge Sort
  * @param {number[]} arr - Array to sort
  * @returns {number[]} - The sorted array
@@ -235,13 +235,13 @@ function merge(left, right) {
   
   return result.concat(left.slice(i)).concat(right.slice(j));
 }`
-  },
-  {
-    id: "quick-sort",
-    name: "Quick Sort",
-    category: "Sorting",
-    desc: "One of the most popular and efficient sorting algorithms, using partitioning around a pivot.",
-    details: `
+    },
+    {
+        id: "quick-sort",
+        name: "Quick Sort",
+        category: "Sorting",
+        desc: "One of the most popular and efficient sorting algorithms, using partitioning around a pivot.",
+        details: `
       <p>Quick Sort is the industry standard for generic sorting (e.g., typically used in C++ STL sort or JS engines). It works by selecting a 'pivot' element and partitioning the array so that all smaller elements are on the left and larger ones on the right.</p>
 
       <h4>Performance</h4>
@@ -253,10 +253,10 @@ function merge(left, right) {
         <li><strong>Space: O(log n)</strong> - Stack space for recursion.</li>
       </ul>
     `,
-    time: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n^2)" },
-    space: "O(log n)",
-    complexityFunction: "nlogn",
-    code: `/**
+        time: { best: "O(n log n)", avg: "O(n log n)", worst: "O(n^2)" },
+        space: "O(log n)",
+        complexityFunction: "nlogn",
+        code: `/**
  * Quick Sort
  * @param {number[]} arr - Array to sort
  * @returns {number[]} - The sorted array
@@ -278,13 +278,13 @@ function quickSort(arr) {
 
   return [...quickSort(left), pivot, ...quickSort(right)];
 }`
-  },
-  {
-    id: "bfs-dfs",
-    name: "BFS / DFS",
-    category: "Graph",
-    desc: "Fundamental algorithms for visiting nodes in a graph or tree: Breadth-First vs Depth-First.",
-    details: `
+    },
+    {
+        id: "bfs-dfs",
+        name: "BFS / DFS",
+        category: "Graph",
+        desc: "Fundamental algorithms for visiting nodes in a graph or tree: Breadth-First vs Depth-First.",
+        details: `
       <p>These are the two main ways to traverse a graph:</p>
       <ul>
         <li><strong>BFS (Breadth-First Search)</strong>: Explores neighbors layer by layer. Like a ripple in a pond. Good for finding the shortest path in unweighted graphs. Uses a <strong>Queue</strong>.</li>
@@ -297,10 +297,10 @@ function quickSort(arr) {
         <li><strong>Space: O(V)</strong> - To store the visited set and the Queue/Stack.</li>
       </ul>
     `,
-    time: { best: "O(V + E)", avg: "O(V + E)", worst: "O(V + E)" },
-    space: "O(V)",
-    complexityFunction: "vplusE",
-    code: `/* 
+        time: { best: "O(V + E)", avg: "O(V + E)", worst: "O(V + E)" },
+        space: "O(V)",
+        complexityFunction: "vplusE",
+        code: `/* 
  Assume graph is an Adjacency List:
  const graph = {
    'A': ['B', 'C'],
@@ -338,13 +338,13 @@ function dfs(graph, start, visited = new Set()) {
     }
   }
 }`
-  },
-  {
-    id: "dijkstra",
-    name: "Dijkstra's Algorithm",
-    category: "Graph",
-    desc: "Finds the shortest paths between nodes in a graph, which may represent, for example, road networks.",
-    details: `
+    },
+    {
+        id: "dijkstra",
+        name: "Dijkstra's Algorithm",
+        category: "Graph",
+        desc: "Finds the shortest paths between nodes in a graph, which may represent, for example, road networks.",
+        details: `
       <p>Dijkstra's algorithm is the gold standard for finding the shortest path in a graph with non-negative edge weights. It is widely used in GPS navigation systems.</p>
 
       <h4>Mechanism</h4>
@@ -355,10 +355,10 @@ function dfs(graph, start, visited = new Set()) {
         <li><strong>Time: O((V + E) log V)</strong> - The log V factor comes from the Priority Queue operations.</li>
       </ul>
     `,
-    time: { best: "O(E log V)", avg: "O(E log V)", worst: "O(E log V)" },
-    space: "O(V)",
-    complexityFunction: "vplusE",
-    code: `// Conceptual Implementation
+        time: { best: "O(E log V)", avg: "O(E log V)", worst: "O(E log V)" },
+        space: "O(V)",
+        complexityFunction: "vplusE",
+        code: `// Conceptual Implementation
 // Requires a PriorityQueue class for O(log n) efficiency
 
 function dijkstra(graph, start) {
@@ -387,5 +387,5 @@ function dijkstra(graph, start) {
   }
   return distances;
 }`
-  }
+    }
 ];
