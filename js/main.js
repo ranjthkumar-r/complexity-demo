@@ -1,6 +1,7 @@
 import { algorithms } from './algorithms.js';
 import { ComplexityChart } from './complexity-chart.js';
 import { SortingVisualizer } from './sorter.js';
+import { analyzeCode } from './analyzer.js';
 
 class App {
     constructor() {
@@ -53,6 +54,28 @@ class App {
             this.sorter.start(alg ? alg.name : 'Bubble Sort');
         };
         document.getElementById('shuffle-btn').onclick = () => this.sorter.shuffle();
+
+        // Analyzer hook
+        document.getElementById('analyze-btn').onclick = () => {
+            const code = document.getElementById('custom-code').value;
+            if (!code.trim()) return;
+
+            const res = analyzeCode(code);
+            const resBox = document.getElementById('analysis-result');
+            resBox.style.display = 'block';
+
+            if (res.error) {
+                document.getElementById('r-time').textContent = 'Error';
+                document.getElementById('r-space').textContent = 'Error';
+                document.getElementById('r-details').textContent = res.error;
+                return;
+            }
+
+            document.getElementById('r-time').textContent = res.timeEstimate;
+            document.getElementById('r-space').textContent = res.spaceEstimate;
+            document.getElementById('r-details').innerHTML =
+                `Loops: ${res.stats.loops}<br>Recursion: ${res.stats.recursion}<br>Confidence: ${res.timeConfidence}`;
+        };
     }
 
     selectAlgorithm(id) {
@@ -67,6 +90,7 @@ class App {
         // Content
         document.getElementById('alg-title').textContent = alg.name;
         document.getElementById('alg-desc').textContent = alg.desc;
+        document.getElementById('alg-details').innerHTML = alg.details || '<p>No details available.</p>';
         document.getElementById('val-time').textContent = alg.time.avg;
         document.getElementById('val-space').textContent = alg.space;
         document.getElementById('code-block').textContent = alg.code;
