@@ -1,103 +1,90 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Complexity Explorer</title>
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complexity Explorer</title>
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <header>
-    <h1>Complexity Explorer 🔍</h1>
-    <p>Interactive visualizations and explanations of time & space complexity</p>
-  </header>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="glass-panel">
+            <div class="logo">Complexity ⚡</div>
+            <input type="text" id="search" class="search-bar" placeholder="Search algorithms...">
+            <div id="alg-list" class="alg-list">
+                <!-- Items injected by JS -->
+            </div>
+        </aside>
 
-  <div class="container">
-    <aside class="sidebar">
-      <input id="search" placeholder="Search algorithms or complexities" />
-      <div id="alg-list" class="alg-list"></div>
-    </aside>
+        <!-- Main Content -->
+        <main>
+            <!-- Header -->
+            <header class="glass-panel" style="flex-direction: column; align-items: flex-start; gap: 16px;">
+                 <div class="title-section">
+                    <h1 id="alg-title">Select an Algorithm</h1>
+                    <p id="alg-desc">Select an algorithm from the sidebar to visualize its complexity and see implementation details.</p>
+                 </div>
+                 <div class="actions">
+                     <button id="highlight-btn" class="btn btn-primary">
+                        Highlight Curve
+                     </button>
+                     <button id="show-sort-btn" class="btn" style="display:none">
+                        Open Visualizer
+                     </button>
+                 </div>
+            </header>
 
-    <main>
-      <section class="controls">
-        <label for="alg-select">Choose algorithm:</label>
-        <select id="alg-select"></select>
-        <button id="highlight-btn">Highlight Complexity</button>
-        <button id="toggle-curves" title="Click legend items to toggle individually">Toggle All Curves</button>
-        <button id="show-sort-vis" class="hidden">Open Sorting Visualizer</button>
-        <div class="help small-help">Tip: click a legend item to hide/show that curve. Hover the plot to see numeric values. Use sorting visualizer to see step-by-step operations.</div>
-        <div id="plot-tooltip" class="tooltip hidden" role="status" aria-live="polite"></div>
-      </section>
+            <!-- Stats & Code -->
+            <section class="glass-panel" style="padding: 0; overflow: hidden; display: grid; grid-template-columns: 1fr 1fr; gap:0;">
+                <div style="padding: 24px; border-right: var(--glass-border);">
+                     <h3 style="margin-bottom: 16px; font-weight: 500;">Analysis</h3>
+                     <div class="stats-grid">
+                         <div class="stat-card">
+                             <label>Time Complexity (Avg)</label>
+                             <div id="val-time" class="value">-</div>
+                         </div>
+                         <div class="stat-card">
+                             <label>Space Complexity</label>
+                             <div id="val-space" class="value">-</div>
+                         </div>
+                     </div>
+                </div>
+                <div style="padding: 24px; background: rgba(0,0,0,0.2);">
+                    <h3 style="margin-bottom: 16px; font-weight: 500;">Implementation</h3>
+                    <pre><code id="code-block">// Code will appear here</code></pre>
+                </div>
+            </section>
 
-      <section class="visual">
-        <canvas id="complexity-canvas" width="800" height="320"></canvas>
-        <div id="legend" class="legend"></div>
-      </section>
+            <!-- Chart -->
+            <section class="glass-panel">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                    <h3>Complexity Growth</h3>
+                    <div id="legend" class="legend"></div>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="complexity-canvas" width="800" height="400"></canvas>
+                </div>
+            </section>
+        </main>
+    </div>
 
-      <section class="details">
-        <h2 id="alg-name">Select an algorithm</h2>
-        <div class="meta">
-          <div><strong>Category:</strong> <span id="alg-category"></span></div>
-          <div><strong>Time (Best / Avg / Worst):</strong> <span id="alg-time"></span></div>
-          <div><strong>Space:</strong> <span id="alg-space"></span></div>
+    <!-- Sorting Modal -->
+    <div id="sort-modal" class="modal-overlay">
+        <div class="modal-content glass-panel">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2>Sorting Visualizer</h2>
+                <button id="close-modal" class="btn">Close</button>
+            </div>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button id="start-sort" class="btn btn-primary">Start Sorting</button>
+                <button id="shuffle-btn" class="btn">Shuffle</button>
+            </div>
+            <canvas id="sort-canvas" width="800" height="300"></canvas>
         </div>
-        <p id="alg-desc"></p>
-        <pre id="alg-code"><code></code></pre>
+    </div>
 
-        <hr />
-        <h3>Analyze JavaScript Code</h3>
-        <div class="analyzer">
-          <label>Sample: <select id="sample-code"><option value="">-- choose sample --</option><option value="binarySearch">Binary Search</option><option value="bubble">Bubble Sort</option><option value="fib">Naive Fibonacci</option><option value="mergeSort">Merge Sort</option><option value="quickSort">Quick Sort</option><option value="countingSort">Counting Sort</option></select></label>
-
-          <div id="code-editor" style="height:220px;border-radius:8px;border:1px solid #e6e9ef;margin-top:8px"></div>
-          <div class="analyzer-controls">
-            <button id="analyze-btn">Analyze</button>
-            <button id="format-btn">Format</button>
-            <input id="fn-name" placeholder="Function name (for profiling)" style="padding:6px;border-radius:6px;border:1px solid #ddd;margin-left:8px" />
-            <button id="profile-btn">Run Empirical Profile</button>
-            <button id="download-report">Download Report</button>
-          </div>
-          <div id="analyze-result" class="analyze-result"></div>
-
-          <div class="analysis-visuals">
-            <canvas id="mini-plot" width="320" height="120" style="border-radius:8px;margin-top:8px;display:block;background:linear-gradient(180deg,#fff,#fbfbff);"></canvas>
-            <h4 style="margin-top:8px">Annotated code</h4>
-            <pre id="annotated-code" class="annotated"></pre>
-
-            <h4 style="margin-top:8px">Empirical Profile</h4>
-            <canvas id="profile-plot" width="320" height="160" style="border-radius:8px;background:#fff"></canvas>
-            <div id="profile-legend" class="small-help"></div>
-          </div>
-        </div>
-      </section>
-
-      <section id="sort-visualizer" class="modal hidden">
-        <div class="inner">
-          <div class="viz-controls">
-            <label>Algorithm: <select id="sort-alg"></select></label>
-            <button id="shuffle">Shuffle</button>
-            <button id="start-sort">Start</button>
-            <button id="close-viz">Close</button>
-          </div>
-          <div id="sort-canvas-wrap"><canvas id="sort-canvas" width="800" height="200"></canvas></div>
-        </div>
-      </section>
-
-    </main>
-  </div>
-
-  <footer>
-    <small>Built with ❤️ — Explore complexity classes & algorithm examples</small>
-  </footer>
-
-  <!-- CodeMirror & escodegen -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/escodegen@2.0.0/escodegen.browser.js"></script>
-  <!-- Esprima for AST parsing (used by analyzer) -->
-  <script src="https://cdn.jsdelivr.net/npm/esprima@4.0.1/dist/esprima.min.js"></script>
-  <script src="analyzer/analyzer.js"></script>
-  <script src="scripts.js"></script>
+    <!-- Modules -->
+    <script type="module" src="js/main.js"></script>
 </body>
 </html>
